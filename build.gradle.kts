@@ -1,0 +1,17 @@
+// Project-level build.gradle.kts
+plugins {
+    // Defines versions but does NOT apply them yet
+    id("com.android.application") version "8.2.1" apply false
+    id("com.android.library") version "8.2.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.22" apply false
+
+    // Required for Requirement D (Parcelable data)
+    id("org.jetbrains.kotlin.plugin.parcelize") version "1.9.22" apply false
+
+    // Required for Room/Hilt
+    id("org.jetbrains.kotlin.kapt") version "1.9.22" apply false
+
+    id("androidx.navigation.safeargs.kotlin") version "2.7.6" apply false
+    id("com.google.dagger.hilt.android") version "2.50" apply false
+    id("com.google.gms.google-services") version "4.4.4" apply false
+}
