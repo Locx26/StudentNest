@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listingsFragment">
+
+    <!-- LISTINGS SCREEN -->
+    <fragment
+        android:id="@+id/listingsFragment"
+        android:name="com.studentnest.app.ui.listings.ListingsFragment"
+        android:label="Properties"
+        tools:layout="@layout/fragment_listings">
+
+        <!-- Action to go to Detail -->
+        <action
+            android:id="@+id/action_listingsFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+
+        <!-- Action to go to Filter -->
+        <action
+            android:id="@+id/action_listingsFragment_to_filterFragment"
+            app:destination="@id/filterFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- DETAIL SCREEN -->
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.studentnest.app.ui.details.ListingDetailFragment"
+        android:label="Property Details"
+        tools:layout="@layout/activity_listing_detail">
+        <argument
+            android:name="listingId"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- FILTER SCREEN -->
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.studentnest.app.ui.filter.FilterFragment"
+        android:label="Filter Search"
+        tools:layout="@layout/activity_filter" />
+
+</navigation>

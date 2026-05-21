@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <!-- 1. Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1A237E"
+        app:title="StudentNest"
+        app:titleTextColor="#FFFFFF"
+        app:elevation="4dp" />
+
+    <!-- 2. Shimmer Loading View (Stay below toolbar) -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Shimmer placeholders -->
+            <View android:layout_width="match_parent" android:layout_height="200dp" android:layout_margin="16dp" android:background="#E0E0E0" />
+            <View android:layout_width="match_parent" android:layout_height="200dp" android:layout_margin="16dp" android:background="#E0E0E0" />
+            <View android:layout_width="match_parent" android:layout_height="200dp" android:layout_margin="16dp" android:background="#E0E0E0" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!-- 3. RecyclerView for Listings (Stay below toolbar) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:visibility="gone"
+        tools:listitem="@layout/item_listing" />
+
+    <!-- 4. Empty State -->
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:tint="#BDBDBD"
+            android:contentDescription="No results" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No rooms found"
+            android:textSize="18sp"
+            android:textColor="#757575" />
+
+        <Button
+            android:id="@+id/btnClearFilter"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear Filters" />
+    </LinearLayout>
+
+    <!-- 5. Floating Action Button for Filters -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_menu_search"
+        app:backgroundTint="#1A237E"
+        app:tint="#FFFFFF"
+        android:contentDescription="Open Filter" />
+
+</RelativeLayout>

@@ -1,0 +1,124 @@
+
+[versions]
+agp = "8.2.1"
+kotlin = "1.9.22"
+coreKtx = "1.12.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+material = "1.11.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+shimmer = "0.5.0"
+glide = "4.16.0"
+hiltAndroid = "2.50"
+room = "2.6.1"
+lifecycle = "2.7.0"
+navigation = "2.7.7"
+playServicesMaps = "18.2.0"
+playServicesLocation = "21.2.0"
+firebaseDatabase = "21.0.0"
+firebaseStorage = "21.0.2"
+firebaseAuth = "23.2.1"
+coroutines = "1.7.3"
+firebaseBom = "32.7.0"
+coreKtxVersion = "1.18.0"
+appcompatVersion = "1.7.1"
+materialVersion = "1.14.0"
+constraintlayoutVersion = "2.2.1"
+firebaseAnalytics = "23.2.0"
+roomRuntime = "2.8.4"
+roomKtx = "2.8.4"
+lifecycleViewmodelKtx = "2.10.0"
+lifecycleLivedataKtx = "2.10.0"
+navigationFragmentKtx = "2.9.8"
+navigationUiKtx = "2.9.8"
+playServicesMapsVersion = "20.0.0"
+playServicesLocationVersion = "21.3.0"
+firebaseBomVersion = "33.1.2"
+activityKtx = "1.13.0"
+kotlinxCoroutinesAndroid = "1.9.0"
+fragmentKtx = "1.6.2"
+platform_comFirebaseBom = "33.1.2"
+firebaseAuthVersion = "24.1.0"
+platform_comFirebaseBomVersion = "33.1.2')"
+platform_comGoogleFirebaseFirebaseBom = "33.1.2"
+platform_comGoogleFirebaseFirebaseBom2 = "33.1.2"
+platform_comGoogleFirebaseFirebaseBom3 = "33.1.2"
+
+[libraries]
+# Core Android
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+# UI & Tools
+shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+
+# Dependency Injection
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltAndroid" }
+
+# Room Database
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Architecture Components
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+
+# Google Services
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
+# Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabase" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorage" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuth" }
+
+# Coroutines
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
+material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayoutVersion" }
+google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+gms-play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMapsVersion" }
+gms-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocationVersion" }
+platform_com-firebase-bom = { group = "platform(", name = "firebase-bom", version.ref = "firebaseBomVersion" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+jetbrains-kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+platform_com-google-firebase-firebase-bom = { group = "platform(", name = "firebase-bom", version.ref = "platform_comFirebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
+platform_com-google-firebase-firebase-bom2 = { group = "platform('com.google.firebase", name = "firebase-bom", version.ref = "platform_comFirebaseBomVersion" }
+platform_com-google-firebase-firebase-bom3 = { group = "platform(", name = "firebase-bom", version.ref = "platform_comGoogleFirebaseFirebaseBom" }
+platform_com-google-firebase-firebase-bom4 = { group = "platform(", name = "firebase-bom", version.ref = "platform_comGoogleFirebaseFirebaseBom2" }
+platform_com-google-firebase-firebase-bom5 = { group = "platform(", name = "firebase-bom", version.ref = "platform_comGoogleFirebaseFirebaseBom3" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.0" }
