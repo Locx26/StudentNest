@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">StudentNest</string>
+
+    <!-- Currency and Price -->
+    <string name="currency_format">BWP %,.2f</string>
+    <string name="per_month">/ month</string>
+
+    <!-- Status Labels -->
+    <string name="status_available">Available</string>
+    <string name="status_occupied">Occupied</string>
+
+    <!-- Distance and Map -->
+    <string name="distance_format">%.2f km away</string>
+    <string name="no_properties_found">No properties found in this area.</string>
+
+    <!-- Registration Errors -->
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_short_password">Password must be at least 6 characters</string>
+</resources>

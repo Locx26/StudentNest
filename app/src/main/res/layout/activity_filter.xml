@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter Listings"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#1A237E"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/etMinPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Min Price (BWP)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etMaxPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max Price (BWP)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Location"
+        android:textSize="12sp"
+        android:layout_marginBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Available Before (YYYY-MM-DD)"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnApplyFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply Filter"
+        android:backgroundTint="#1A237E" />
+
+    <Button
+        android:id="@+id/btnSavePreferences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save as My Preferences (Enable Alerts)"
+        android:backgroundTint="#283593"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

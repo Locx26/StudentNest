@@ -1,0 +1,13 @@
+<resources>
+    <!-- Professional Modern Theme -->
+    <style name="Theme.StudentNest" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Brand Color -->
+        <item name="colorPrimary">#1A237E</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <!-- Success/Action Color -->
+        <item name="colorSecondary">#2E7D32</item>
+        <!-- Background and Surface -->
+        <item name="android:windowBackground">#F8F9FA</item>
+        <item name="android:statusBarColor">#1A237E</item>
+    </style>
+</resources>
