@@ -1,64 +1,53 @@
-package com.studentnest.app.util
+package com.studentnest.app.utils
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.content.pm.PackageManager
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.studentnest.app.R
+import com.studentnest.app.MainActivity
 
-/**
- * Requirement C: Smart Filtering & Alerts
- * This helper provides local notifications when a listing matches user preferences.
- */
 object NotificationHelper {
+    private const val CHANNEL_ID = "studentnest_listings"
+    private const val NOTIFICATION_ID = 1001
 
-    private const val CHANNEL_ID = "student_nest_alerts"
-    private const val CHANNEL_NAME = "Listing Alerts"
-    private const val CHANNEL_DESC = "Notifications for matching house listings"
+    fun showListingMatchNotification(context: Context, title: String = "New Listings Available") {
+        createNotificationChannel(context)
 
-    /**
-     * Initializes the Notification Channel.
-     * Call this in your Application class or MainActivity.
-     */
-    fun createNotificationChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
-                description = CHANNEL_DESC
-            }
-            val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentTitle(title)
+            .setContentText("Check out our latest accommodations!")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
-    /**
-     * Requirement C: Shows a local notification when a smart match is found.
-     */
-    fun showListingMatchNotification(context: Context, houseTitle: String, location: String) {
-        // Check for POST_NOTIFICATIONS permission (Required for Android 13+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED) {
-                return // Permission not granted, cannot show notification
+    private fun createNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "StudentNest Listings",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notifications about new accommodation listings"
             }
-        }
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_home) // Ensure you have a vector drawable named ic_home
-            .setContentTitle("Smart Match Found!")
-            .setContentText("A room in $location matches your preference: $houseTitle")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-
-        with(NotificationManagerCompat.from(context)) {
-            // notificationId is a unique int for each notification
-            notify(System.currentTimeMillis().toInt(), builder.build())
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

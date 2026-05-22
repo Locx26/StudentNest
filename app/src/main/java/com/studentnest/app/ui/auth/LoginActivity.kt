@@ -1,66 +1,85 @@
 package com.studentnest.app.ui.auth
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.lifecycleScope
 import com.studentnest.app.databinding.ActivityLoginBinding
 import com.studentnest.app.ui.listings.ListingsActivity
+import androidx.room.Room
+import com.studentnest.app.data.database.AppDatabase
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var prefs: SharedPreferences
-    private lateinit var auth: FirebaseAuth
+    private lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase Auth and SharedPreferences
-        auth = FirebaseAuth.getInstance()
-        prefs = getSharedPreferences("studentnest_prefs", MODE_PRIVATE)
+        database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "studentnest_database"
+        ).fallbackToDestructiveMigration().build()
 
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
-            val pass = binding.etPassword.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
 
-            if (email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show()
+            if (email.isEmpty()) {
+                binding.tilEmail.error = "Email is required"
                 return@setOnClickListener
+            } else {
+                binding.tilEmail.error = null
             }
 
-            // Perform Firebase Login
-            auth.signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val firebaseUser = auth.currentUser
+            if (password.isEmpty()) {
+                binding.tilPassword.error = "Password is required"
+                return@setOnClickListener
+            } else {
+                binding.tilPassword.error = null
+            }
 
-                        // FIX: Save user session to SharedPreferences
-                        // This fixes the "userId = -1" error in ListingDetailActivity
-                        prefs.edit()
-                            .putInt("userId", 1) // Using '1' as a default ID for the logged-in student
-                            .putString("userEmail", firebaseUser?.email)
-                            .apply()
-
-                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-
-                        val intent = Intent(this@LoginActivity, ListingsActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        // Handle Firebase Errors (e.g. Configuration Not Found)
-                        val errorMsg = task.exception?.message ?: "Authentication failed"
-                        Toast.makeText(this@LoginActivity, "Login Failed: $errorMsg", Toast.LENGTH_LONG).show()
-                    }
-                }
+            performLogin(email, password)
         }
 
-        binding.tvRegister.setOnClickListener {
+        binding.tvRegisterPrompt.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+    }
+
+    private fun performLogin(email: String, password: String) {
+        lifecycleScope.launch {
+            try {
+                val user = database.userDao().login(email, password)
+
+                if (user != null) {
+                    val prefs = getSharedPreferences("studentnest_prefs", MODE_PRIVATE)
+                    prefs.edit().apply {
+                        putInt("userId", user.id)
+                        putString("userName", user.fullName)
+                    }.apply()
+
+                    startActivity(Intent(this@LoginActivity, ListingsActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Invalid email or password",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -16,14 +16,10 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _listing = MutableLiveData<Listing?>()
-    val listing: LiveData<Listing?> get() = _listing
+    val listing: LiveData<Listing?> = _listing
 
-    /**
-     * Fetches a single listing from the repository by its ID.
-     */
     fun getListingById(id: Int) {
         viewModelScope.launch {
-            // We ask the repository for the specific house
             val result = repository.getListingById(id)
             _listing.postValue(result)
         }

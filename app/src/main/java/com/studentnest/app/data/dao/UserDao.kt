@@ -1,12 +1,14 @@
 package com.studentnest.app.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 import com.studentnest.app.data.model.User
 
 @Dao
 interface UserDao {
     @Insert
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(user: User): Long
 
     @Query("SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1")
     suspend fun login(email: String, password: String): User?
@@ -14,6 +16,6 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
     suspend fun getUserByEmail(email: String): User?
 
-    @Query("SELECT COUNT(*) FROM users")
-    suspend fun getUserCount(): Int
+    @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
+    suspend fun getUserById(id: Int): User?
 }

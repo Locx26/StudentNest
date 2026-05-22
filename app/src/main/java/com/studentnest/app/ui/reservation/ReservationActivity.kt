@@ -7,33 +7,27 @@ import com.studentnest.app.databinding.ActivityReservationBinding
 import com.studentnest.app.ui.listings.ListingsActivity
 
 class ReservationActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityReservationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize ViewBinding
         binding = ActivityReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Retrieve data passed from ListingDetailActivity
         val ref = intent.getStringExtra("ref") ?: "N/A"
-        val title = intent.getStringExtra("title") ?: "Unknown Property"
+        val title = intent.getStringExtra("title") ?: "Property"
         val deposit = intent.getDoubleExtra("deposit", 0.0)
 
-        // Update the UI components
-        binding.tvReceiptTitle.text = "Property: $title"
-        binding.tvReceiptRef.text = "Reference: $ref"
-        binding.tvReceiptAmount.text = "Deposit Paid: BWP %.2f".format(deposit)
+        binding.apply {
+            tvPropertyName.text = title
+            tvReferenceNumber.text = ref
+            tvDepositAmount.text = "BWP \u0050${String.format("%,.2f", deposit)}"
 
-        // Button to return to the main listings screen
-        binding.btnBackHome.setOnClickListener {
-            val intent = Intent(this, ListingsActivity::class.java)
-            startActivity(intent)
-            // finishAffinity() closes all previous activities so the user
-            // doesn't "go back" into the payment screen.
-            finishAffinity()
+            btnDone.setOnClickListener {
+                val intent = Intent(this@ReservationActivity, ListingsActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }
         }
     }
 }

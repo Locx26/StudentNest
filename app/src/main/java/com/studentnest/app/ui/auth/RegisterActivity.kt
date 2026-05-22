@@ -6,110 +6,109 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.studentnest.app.data.database.AppDatabase
-import com.studentnest.app.data.model.User
 import com.studentnest.app.databinding.ActivityRegisterBinding
+import com.studentnest.app.data.model.User
+import androidx.room.Room
+import com.studentnest.app.data.database.AppDatabase
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var auth: FirebaseAuth
+    private lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "studentnest_database"
+        ).fallbackToDestructiveMigration().build()
+
         setupClickListeners()
     }
 
     private fun setupClickListeners() {
         binding.btnRegister.setOnClickListener {
-            handleRegistration()
-        }
+            val fullName = binding.etFullName.text.toString().trim()
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
 
-        binding.tvLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-    }
+            var isValid = true
 
-    private fun handleRegistration() {
-        val name = binding.etFullName.text.toString().trim()
-        val email = binding.etEmail.text.toString().trim()
-        val pass = binding.etPassword.text.toString().trim()
-
-        if (!validateInputs(name, email, pass)) return
-
-        setLoadingState(true)
-
-        // 1. Firebase Authentication for Role-Based Access
-        auth.createUserWithEmailAndPassword(email, pass)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val uid = auth.currentUser?.uid ?: ""
-
-                    // 2. Save to Firebase Realtime Database (Access Control Proof)
-                    saveUserToFirebase(uid, name, email)
-
-                    // 3. Save to Local Room Database
-                    saveUserToRoom(name, email, pass)
-                } else {
-                    setLoadingState(false)
-                    Toast.makeText(this, "Auth Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
+            if (fullName.isEmpty()) {
+                binding.tilFullName.error = "Full name is required"
+                isValid = false
+            } else {
+                binding.tilFullName.error = null
             }
+
+            if (email.isEmpty()) {
+                binding.tilEmail.error = "Email is required"
+                isValid = false
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.tilEmail.error = "Enter a valid email"
+                isValid = false
+            } else {
+                binding.tilEmail.error = null
+            }
+
+            if (password.isEmpty()) {
+                binding.tilPassword.error = "Password is required"
+                isValid = false
+            } else if (password.length < 6) {
+                binding.tilPassword.error = "Password must be at least 6 characters"
+                isValid = false
+            } else {
+                binding.tilPassword.error = null
+            }
+
+            if (isValid) {
+                performRegister(fullName, email, password)
+            }
+        }
     }
 
-    private fun saveUserToFirebase(uid: String, name: String, email: String) {
-        val userMap = mapOf(
-            "uid" to uid,
-            "fullName" to name,
-            "email" to email,
-            "role" to "Student" // REQUIREMENT A-A: Role assignment
-        )
+    private fun performRegister(fullName: String, email: String, password: String) {
+        binding.btnRegister.isEnabled = false
+        binding.btnRegister.text = "Creating Account..."
 
-        FirebaseDatabase.getInstance().getReference("Users")
-            .child(uid)
-            .setValue(userMap)
-    }
-
-    private fun saveUserToRoom(name: String, email: String, pass: String) {
-        val db = AppDatabase.getInstance(this)
         lifecycleScope.launch {
             try {
-                // Room insertion with the 'Student' role
-                db.userDao().insertUser(User(fullName = name, email = email, password = pass, role = "Student"))
+                val existingUser = database.userDao().getUserByEmail(email)
+                if (existingUser != null) {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Email already registered",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.btnRegister.isEnabled = true
+                    binding.btnRegister.text = "Register"
+                    return@launch
+                }
 
-                setLoadingState(false)
-                Toast.makeText(this@RegisterActivity, "Student Account Created!", Toast.LENGTH_LONG).show()
+                val newUser = User(
+                    fullName = fullName,
+                    email = email,
+                    password = password
+                )
+                database.userDao().insertUser(newUser)
+
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Welcome to StudentNest!",
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                 finish()
             } catch (e: Exception) {
-                setLoadingState(false)
-                Toast.makeText(this@RegisterActivity, "Room Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                binding.btnRegister.isEnabled = true
+                binding.btnRegister.text = "Register"
             }
         }
-    }
-
-    private fun validateInputs(name: String, email: String, pass: String): Boolean {
-        var isValid = true
-        if (name.isEmpty()) { binding.etFullName.error = "Name required"; isValid = false }
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Valid email required"; isValid = false
-        }
-        if (pass.length < 6) { binding.etPassword.error = "Min 6 characters"; isValid = false }
-        return isValid
-    }
-
-    private fun setLoadingState(isLoading: Boolean) {
-        binding.btnRegister.isEnabled = !isLoading
-        binding.btnRegister.text = if (isLoading) "Creating Account..." else "Register"
-        binding.btnRegister.alpha = if (isLoading) 0.7f else 1.0f
     }
 }

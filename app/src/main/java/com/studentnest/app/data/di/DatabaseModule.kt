@@ -1,10 +1,11 @@
 package com.studentnest.app.data.di
 
 import android.content.Context
-import com.studentnest.app.data.dao.ListingDao
-import com.studentnest.app.data.dao.UserDao
-import com.studentnest.app.data.dao.ReservationDao
+import androidx.room.Room
 import com.studentnest.app.data.database.AppDatabase
+import com.studentnest.app.data.dao.ListingDao
+import com.studentnest.app.data.dao.ReservationDao
+import com.studentnest.app.data.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,30 +16,39 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
-    @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
-        // Use the singleton instance from AppDatabase
-        // AppDatabase already contains the .fallbackToDestructiveMigration() logic
-        return AppDatabase.getInstance(context)
+    @Provides
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "studentnest_database"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
-    @Provides
     @Singleton
-    fun provideListingDao(db: AppDatabase): ListingDao {
-        return db.listingDao()
+    @Provides
+    fun provideListingDao(database: AppDatabase): ListingDao {
+        return database.listingDao()
     }
 
-    @Provides
     @Singleton
-    fun provideUserDao(db: AppDatabase): UserDao {
-        return db.userDao()
+    @Provides
+    fun provideUserDao(database: AppDatabase): UserDao {
+        return database.userDao()
     }
 
-    @Provides
     @Singleton
-    fun provideReservationDao(db: AppDatabase): ReservationDao {
-        return db.reservationDao()
+    @Provides
+    fun provideReservationDao(database: AppDatabase): ReservationDao {
+        return database.reservationDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppDatabaseInstance(database: AppDatabase): AppDatabase {
+        return database
     }
 }
